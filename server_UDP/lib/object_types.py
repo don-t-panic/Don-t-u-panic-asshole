@@ -1,0 +1,2 @@
+CHARACTER = "1"
+STONE = "2"
