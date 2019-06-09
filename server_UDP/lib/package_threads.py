@@ -1,4 +1,4 @@
-from threading import Thread, Lock
+from threading import Thread
 import socket
 
 RECEIVE_TIMEOUT = 10
