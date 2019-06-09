@@ -95,7 +95,7 @@ class Server(Thread):
         while not self.__check_stop():
             self.__check_received_packages()
             self.__check_clients_activity()
-            #self.__check_if_clients_need_update()
+            self.__check_if_clients_need_update()
         self.__close_server()
 
     def __check_if_clients_need_update(self):
@@ -265,6 +265,12 @@ class Server(Thread):
                 if 0 <= chunk_pos_x <= self.__map_width and 0 <= chunk_pos_y <= self.__map_height:
                     indexes.append(self.find_chunk_index_by_position((chunk_pos_x, chunk_pos_y)))
         return indexes
+
+    def get_client_by_key(self, key):
+        for client in self.__connected_clients:
+            if client.get_auth_key() == key:
+                return client
+        return None
 
     def get_close_objects(self, character):
         close_objects = []

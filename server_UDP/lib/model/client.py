@@ -40,7 +40,7 @@ class Client:
         return self.__auth_key
 
     def update_last_received_time(self, received_time):
-        self.__last_recived_time = received_time
+        self.__last_received_time = received_time
 
     def is_user_active(self):
         current_time = time.time()

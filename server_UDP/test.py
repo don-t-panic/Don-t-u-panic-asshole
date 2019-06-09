@@ -15,7 +15,6 @@ message = {
 }
 msg = pickle.dumps(json.dumps(message))
 addr = ("127.0.0.1", 7070)
-
 client_socket.sendto(msg, addr)
 data, server = client_socket.recvfrom(4096)
 print(f"Data received after login: {data}")
@@ -26,6 +25,8 @@ message = {
     "data": [4000, 100]
 }
 msg = pickle.dumps(json.dumps(message))
-client_socket.sendto(msg, addr)
+for i in range(1, 20):
+    time.sleep(2)
+    client_socket.sendto(msg, addr)
 data, server = client_socket.recvfrom(4096)
 print(f"Data received after position change: {data}")

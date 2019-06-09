@@ -4,6 +4,7 @@ from lib.model.update_position import UpdatePosition
 import pickle
 import json
 import jsonpickle
+import time
 
 
 class RequestHandler:
@@ -24,7 +25,12 @@ class RequestHandler:
         data, address = package
         deserialized_data = self.__deserialize_object(data)
         request_type = self.__get_request_type(deserialized_data)
-        return self.__dictionary[request_type].__call__(deserialized_data, address)
+        auth_key = self.__get_key(deserialized_data)
+        package_to_send = self.__dictionary[request_type].__call__(deserialized_data, address)
+        client = self.__server.get_client_by_key(auth_key)
+        if client is not None:
+            client.update_last_received_time(time.time())
+        return package_to_send
 
     def __handle_login(self, data, address):
         auth_key = self.__get_key(data)
