@@ -1,5 +1,6 @@
 {
   "font": "Segoe UI",
+  "monospaced_font":  "consolas",
   "intro_font_size" : 120,
   "intro_duration" : 6000,
   "login_font_size" : 50,

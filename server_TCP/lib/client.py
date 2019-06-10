@@ -43,10 +43,10 @@ class Client(Thread):
                 handler = self.__requests_dictionary[request_type]
                 respond = handler.handle(deserialized_data, self)
                 print('DEBUG', type(respond), ' ', respond)
-                self.__connection.send(self.__serialize_object(respond))
+                self.__connection.sendall(self.__serialize_object(respond))
             except KeyError:
                 print('request handler not founded')
-                self.__connection.send(self.__serialize_object({'respond': 'request cannot be handled}'}))
+                self.__connection.sendall(self.__serialize_object({'respond': 'request cannot be handled}'}))
             except socket.timeout:
                 pass
             except Exception as e:

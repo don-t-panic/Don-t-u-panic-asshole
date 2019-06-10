@@ -4,6 +4,7 @@ import json
 from lib import errors_provider
 from lib.connections.request.login_data import Login
 from lib.connections.request.server_list import ServerList
+from lib.connections.request import request_types
 
 
 class Connector:
@@ -48,22 +49,31 @@ class Connector:
     def login_authorize(self, username, password):
         authorized_user = Login(username, password)
         try:
-            self.__socket.send(self.__serialize_object(authorized_user))
+            self.__socket.sendall(self.__serialize_object(authorized_user))
         except Exception as e:
             self.__is_connected = False
-            print(f'Error sending and receiving data from server (Login) {e}')
+            print(f'Error sending data from server (Login) {e}')
             return False
         return True
 
     def get_servers(self):
         servers_list = ServerList()
         try:
-            self.__socket.send(self.__serialize_object(servers_list))
+            self.__socket.sendall(self.__serialize_object(servers_list))
+            server_response = self.__socket.recv(self.__MAX_PACKAGE)
+            if server_response == '':
+                return []
+            else:
+                server_response = self.__deserialize_object(server_response)
+            print(f'Server responded with {server_response}')
+            if server_response['request_type'] == request_types.SERVER_LISTS:
+                return server_response['response']
+            else:
+                raise Exception
         except Exception as e:
-            self.__is_connected = False
-            print(f'Error sending data to server (Server list) {e}')
-            return False
-        return True
+            print(f'Error sending and receiving data from server (Server list) {e}')
+        return []
+        pass
 
     def get_response(self, timeout=None):
         try:

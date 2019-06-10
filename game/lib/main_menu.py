@@ -17,7 +17,8 @@ FONT_SIZE_TITLE = game_config['menu_title_font_size'] if game_config is not None
 FONT_SIZE_MENU = game_config['menu_font_size'] if game_config is not None else 50
 
 
-class MainMenu():
+class MainMenu:
+
     def __init__(self, game):
         self.__game = game
         self.__screen_size = self.__game.get_screen().get_size()
@@ -26,12 +27,15 @@ class MainMenu():
         self.__text_menu_font = pygame.freetype.SysFont(FONT_STYLE, self.__text_menu_height)
         self.__font_game_title = pygame.freetype.SysFont(FONT_STYLE, self.__text_title_height)
         self.__empty_rect = 2
-        self.__title_pos_y = self.__screen_size[1] / 9
-        self.__title_pos_x = self.__screen_size[0] / 16
+        self.__width_size = 0
+        self.__height_size = 1
+        self.__title_pos_y = self.__screen_size[self.__height_size] / 9
+        self.__title_pos_x = self.__screen_size[self.__width_size] / 16
         self.__new_line_title = self.__text_title_height + self.__text_title_height / 3
         self.__new_line = self.__text_menu_height + self.__text_menu_height / 2
-        self.__button_pos_x = self.__screen_size[0] / 16
-        self.__button_pos_y = self.__screen_size[1] / 9 + self.__title_pos_y + 2 * self.__new_line_title
+        self.__button_pos_x = self.__screen_size[self.__width_size] / 16
+        self.__button_pos_y = self.__screen_size[
+                                  self.__height_size] / 9 + self.__title_pos_y + 2 * self.__new_line_title
         self.__button_start = button.Button(self.__button_pos_x, self.__button_pos_y, 0.2, 0.1, text='Start',
                                             function=self.choice, args="Start")
         self.__button_controls = button.Button(self.__button_pos_x, self.__button_pos_y + 1 * self.__new_line, 0.2, 0.1,

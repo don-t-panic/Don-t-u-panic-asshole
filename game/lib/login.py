@@ -58,7 +58,7 @@ class Login(object):
         password = self.__input_password.get_value()
         if not self.__validate_input(login, password):
             return
-        conn = self.__game.get_connector()
+        conn = self.__game.get_tcp_connector()
         if not conn.is_connected():
             self.__info.set_text('No server connection. Try again later.')
             self.__info.set_color(colors.RED)
@@ -69,12 +69,13 @@ class Login(object):
             self.__waiting_for_server_response = True
 
     def __check_server_response(self):
-        server_responses = self.__game.get_server_responses()
+        server_responses = self.__game.get_tcp_server_responses()
         for response in server_responses:
             if response['request_type'] != request_types.LOGIN_RESULT:
                 continue
             if response['response'] == 'True':
                 print("Login success")
+                self.__game.set_logged_user(self.__input_login.get_value())
                 self.__game.set_state(gamestates.MAIN_MENU)
                 self.__waiting_for_server_response = False
             else:
